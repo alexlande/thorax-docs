@@ -145,7 +145,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['build', 'connect', 'watch']);
   grunt.registerTask('start', ['build', 'connect', 'open-browser', 'watch']);
-  grunt.registerTask('build', ['process-readme', 'copy:main', 'static:docs', 'stylus', 'cssmin', 'concat']);
+  grunt.registerTask('build', ['copy:main', 'static:docs', 'stylus', 'cssmin', 'concat']);
   grunt.registerTask('release', ['build', 'release-docs']);
 
   grunt.registerTask('open-browser', function() {
