@@ -606,28 +606,29 @@ Timeout duration in seconds before a `load:start` callback will be triggered. De
 
 Just like `_loadingTimeoutDuration` but applies to `load:end`. Defaults to 0.10 seconds.
 
-## Template Helpers
 
-### template *{{template name [options]}}*
 
-Embed a template inside of another, as a string. An associated view (if any) will not be initialized. By default the template will be called with the current context but extra options may be passed which will be added to the context.
 
-    {{template "path/to/template" key="value"}}
 
-If a block is used, the template will have a variable named `@yield` available that will contain the contents of the block.
 
-    {{#template "child"}}
-      content in the block will be available in a variable
-      named "@yield" inside the template "child"
-    {{/template}}
 
-This is useful when a child template will be called from multiple different parents.
 
-### super *{{super}}*
 
-Embed the `template` from the parent view within the child template.
 
-    {{super}}
+
+
+
+
+
+
+
+
+
+
+## Templates
+
+### Templating in a Thorax App: Handlebars
+Templating definition. Why it's used, what it does, why handlebars and other options like underscore templates that were not chosen. Role of templating in JS one page apps. Diagram. Remember... templates, application.handlebars... also, model attribute access inside of templates, and inside of the collection helper listed below. Awesome selling point!
 
 ### view *{{view name [options]}}*
 
@@ -642,62 +643,6 @@ If a block is specified it will be assigned as the `template` to the view instan
       viewInstance will have this block
       set as its template property
     {{/view}}
-
-### element *{{element name [options]}}*
-
-Embed a DOM element in the view. This uses a placeholder technique to work, if the placeholder must be of a certain type in order to be valid (for instance a `tbody` inside of a `table`) specify a `tag` option.
-
-    {{element domElement tag="tbody"}}
-
-### button *{{#button methodName [htmlAttributes...]}}*
-
-Creates a `button` tag that will call the specified methodName on the view when clicked. Arbitrary HTML attributes can also be specified.
-
-    {{#button "methodName" class="btn"}}Click Me{{/button}}
-
-The tag name may also be specified:
-
-    {{#button "methodName" tag="a" class="btn"}}A Link{{/button}}
-
-A `trigger` attribute will trigger an event on the declaring view:
-
-    {{#button trigger="eventName"}}Button{{/button}}
-
-A button can have both a `trigger` attribute and a method to call:
-
-    {{#button "methodName" trigger="eventName"}}Button{{/button}}
-
-The method may also be specified as a `method` attribute:
-
-    {{#button method="methodName"}}Button{{/button}}
-
-### url *{{url urlString expand-tokens=bool}}*
-
-Prepends "#" if `Backbone.history.pushSate` is disabled or prepends `Backbone.history.root` if it is enabled. If `expand-tokens=true` is passed, then any handlebars tokens will be resolved with the current context. For example if the context had an `id` attribute `{{id}}` would be replaced with the value of `id`:
-
-    {{url "articles/{{id}}" expand-tokens=true}}
-
-Multiple arguments can be passed and will be joined with a "/":
-
-    {{url "articles" id}}
-
-### link *{{#link url [htmlAttributes...]}}*
-
-Creates an `a` tag that will call `Backbone.history.navigate()` with the given url when clicked. Passes the `url` parameter to the `url` helper with the current context. Do not use this method for creating external links. Like the `url` helper, multiple arguments may be passed as well as an `expand-tokens` option.
-
-    {{#link "articles/{{id}}" expand-tokens=true class="article-link"}}Link Text{{/link}}
-
-To call a method from an `a` tag use the `button` helper:
-
-    {{#button "methodName" tag="a"}}My Link{{/button}}
-
-Like the `button` helper, a `trigger` attribute may be specified that will trigger an event on the delcaring view in addition to navigating to the specified url:
-
-    {{#link "articles" id trigger="customEvent"}}Link Text{{/link}}
-
-The href attribute is required but may also be specified as an attribute:
-
-    {{#link href="articles/{{id}}" expand-tokens=true}}Link Test{{/link}}
 
 ### collection *{{collection [collection] [options...]}}*
 
@@ -764,6 +709,46 @@ As a result the following two views are equivelenet:
       template: Handlebars.compile('{{view collectionView}}')
     });
 
+### button *{{#button methodName [htmlAttributes...]}}*
+
+Creates a `button` tag that will call the specified methodName on the view when clicked. Arbitrary HTML attributes can also be specified.
+
+    {{#button "methodName" class="btn"}}Click Me{{/button}}
+
+The tag name may also be specified:
+
+    {{#button "methodName" tag="a" class="btn"}}A Link{{/button}}
+
+A `trigger` attribute will trigger an event on the declaring view:
+
+    {{#button trigger="eventName"}}Button{{/button}}
+
+A button can have both a `trigger` attribute and a method to call:
+
+    {{#button "methodName" trigger="eventName"}}Button{{/button}}
+
+The method may also be specified as a `method` attribute:
+
+    {{#button method="methodName"}}Button{{/button}}
+
+### link *{{#link url [htmlAttributes...]}}*
+
+Creates an `a` tag that will call `Backbone.history.navigate()` with the given url when clicked. Passes the `url` parameter to the `url` helper with the current context. Do not use this method for creating external links. Like the `url` helper, multiple arguments may be passed as well as an `expand-tokens` option.
+
+    {{#link "articles/{{id}}" expand-tokens=true class="article-link"}}Link Text{{/link}}
+
+To call a method from an `a` tag use the `button` helper:
+
+    {{#button "methodName" tag="a"}}My Link{{/button}}
+
+Like the `button` helper, a `trigger` attribute may be specified that will trigger an event on the delcaring view in addition to navigating to the specified url:
+
+    {{#link "articles" id trigger="customEvent"}}Link Text{{/link}}
+
+The href attribute is required but may also be specified as an attribute:
+
+    {{#link href="articles/{{id}}" expand-tokens=true}}Link Test{{/link}}
+
 ### empty *{{#empty [modelOrCollection]}}*
 
 A conditional helper much like `if` that calls `isEmpty` on the specified object. In addition it will bind events to re-render the view should the object's state change from empty to not empty, or visa versa.
@@ -782,31 +767,22 @@ To embed a row within a `collection` helper if it the collection is empty, speci
       <li>So very empty</li>
     {{/collection}}
 
-### collection-element *{{collection-element [htmlAttributes...]}}*
+### template *{{template name [options]}}*
 
-By default `Thorax.CollectionView` instances have no template. Items will be appended to and removed from the view's `el`. Alternatively a template can be specified and `collection-element` used to specify where the individal items in a collection will be rendered.
+Embed a template inside of another, as a string. An associated view (if any) will not be initialized. By default the template will be called with the current context but extra options may be passed which will be added to the context.
 
-    <div>
-      {{collection-element tag="ul" class="my-list"}}
-    </div>
+    {{template "path/to/template" key="value"}}
 
-### layout-element *{{layout-element [htmlAttributes...]}}*
+If a block is used, the template will have a variable named `@yield` available that will contain the contents of the block.
 
-By default `Thorax.LayoutView` instances have no template, `setView` will append directly to the view's `el`. Alternatively a template can be specified and a `layout-element` and `setView` will append to that element.
+    {{#template "child"}}
+      content in the block will be available in a variable
+      named "@yield" inside the template "child"
+    {{/template}}
 
-    <ul>
-      {{layout-element tag="li" id="my-layout"}}
-    </ul>
+This is useful when a child template will be called from multiple different parents.
 
-### loading *{{#loading}}*
 
-A block helper to use when the view is loading. For collection specific loading the a `CollectionView` accepts `loadingView` and `loadingTemplate` options to append an item in a collection when it is loading.
-
-    {{#loading}}
-      View is loading a model or collection.
-    {{else}}
-      View is not loading a model or collection.
-    {{/loading}}
 
 ## Catalog of Built-in Events
 
