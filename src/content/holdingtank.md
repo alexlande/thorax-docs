@@ -94,3 +94,63 @@ Validate the attributes created by `serialize`, must return an array or nothing 
       }
       return errors;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Thorax.HelperView
+
+### registerViewHelper *Handlebars.registerViewHelper(name [,viewClass] ,callback)*
+
+Note that this differs from `Handlebars.registerHelper`. Registers a helper that will create and append a new `HelperView` instance, with its `template` attribute set to the value of the captured block. `callback` will recieve any arguments passed to the helper followed by a `HelperView` instance. Named arguments to the helper will be present on `options` attribute of the `HelperView` instance.
+
+A `HelperView` instance differs from a regular view instance in that it has a `parent` attribute which is always set to the declaring view, and a `context` which always returns the value of the `parent`'s context method. The `collection`, `empty` and other built in block view helpers are created with `registerViewHelper`.
+
+A helper that re-rendered a `HelperView` every time an event was triggered on the declaring view could be implemented as:
+
+    Handlebars.registerViewHelper('on', function(eventName, helperView) {
+      helperView.listenTo(helperView.parent, eventName, function() {
+        helperView.render();
+      });
+    });
+
+An example use of this would be to have a counter that would increment each time a button was clicked. In Handlebars:
+
+    {{#on "incremented"}}{{i}}{/on}}
+    {{#button trigger="incremented"}}Add{{/button}}
+
+And the corresponding view class:
+
+    new Thorax.View({
+      events: {
+        incremented: function() {
+          ++this.i;
+        }
+      },
+      initialize: function() {
+        this.i = 0;
+      },
+      template: ...
+    });
+
+In addition, if a view class is specified as the second argument to `registerViewHelper`, the helper will always initialize a view of that class instead of a `HelperView`:
+
+    Handlebars.registerViewHelper('collection',
+      Thorax.CollectionHelperView, function(collection, view) {
+
+    });
