@@ -10,23 +10,25 @@ Modules! Hit them from the router which is really just backbone.router.extend!
 
 
 
-## Models & Collections
+## MODELS & COLLECTIONS
 
-Both models and collections are relatively untouched... Enhances `Backbone.Model` and `Backbone.Collection` with the concept of whether or not the model is populated and whether or not it should be automatically fetched. Note that when passing a model or collection to `view.setModel` or `view.setCollection` it must be an instance of `Thorax.Model` or `Thorax.Collection` and not `Backbone.Model` or `Backbone.Collection`, respectively.
+SECTION NARRATIVE: Both models and collections are relatively untouched... Enhances `Backbone.Model` and `Backbone.Collection` with the concept of whether or not the model is populated and whether or not it should be automatically fetched. Note that when passing a model or collection to `view.setModel` or `view.setCollection` it must be an instance of `Thorax.Model` or `Thorax.Collection` and not `Backbone.Model` or `Backbone.Collection`, respectively.
 
-### isEmpty *model.isEmpty()* *collection.isEmpty()*
+### *model.isEmpty()* *collection.isEmpty()*
 
-Used by the `empty` helper. In a collection the implementations of `isEmpty` and `isPopulated` differ, but in a model `isEmpty` is an alias for `!isPopulated`. 
+NARRATIVE REFERENCE (big picture): You will likely not need to call this method directly. It will normally be called by the template helper `{{#empty modelOrCollection}}` or `CollectionView`. 
 
-For collections, Used by the `empty` helper and the `emptyTemplate` and `emptyItem` options of a `CollectionView` to check whether a collection is empty. A collection is only treated as empty if it `isPopulated` and zero length.
+API (details): In a collection the implementations of `isEmpty` and `isPopulated` differ, but in a model `isEmpty` is an alias for `!isPopulated`. For collections, `isEmpty()` is used by the `empty` helper and the `emptyTemplate` and `emptyItem` options of a `CollectionView` to check whether a collection is empty. A collection is only treated as empty if it `isPopulated` and zero length. <-- this last sentence seems wonky...
 
+<a class="jsbin-embed" href="http://jsbin.com/afejoq/3/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
-### isPopulated *model.isPopulated()* *collection.isPopulated()*
+### *model.isPopulated()* *collection.isPopulated()*
 
-Used by `setModel` to determine whether or not to fetch the model. The default implementation checks to see if any keys that are not `id` and are not default values have been set.
+NARRATIVE REFERENCE (big picture): When you add a model attribute to a view (CHANGE, LUMBAR), `setModel` is going to be called on that view for you automatically by Thorax. `view.setModel()` and `view.setCollection()` use this to determine whether or not to fetch the collection.
 
-Used by `setCollection` to determine whether or not to fetch the collection.
+API (details): The default implementation checks to see if any keys that are not `id` and are not default values have been set.
 
+<a class="jsbin-embed" href="http://jsbin.com/afejoq/3/embed?live">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
 
 
 
@@ -186,7 +188,7 @@ A `view` may be optionally passed to limit the lookup to a specific view.
 
 
 
-## Templates
+## TEMPLATES
 
 ### Templating in a Thorax App: Handlebars
 Templating definition. Why it's used, what it does, why handlebars and other options like underscore templates that were not chosen. Role of templating in JS one page apps. Diagram. Remember... templates, application.handlebars... also, model attribute access inside of templates, and inside of the collection helper listed below. Awesome selling point!
